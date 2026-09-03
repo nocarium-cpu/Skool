@@ -582,7 +582,7 @@ function switchPage(pageName) {
 // ==========================================
 // DÉCONNEXION DU COMPTE
 // ==========================================
-
+document.getElementById("leave-class-button").addEventListener("click", leaveClass);
 document.getElementById("logout-button").addEventListener("click", async () => {
 
     try {
