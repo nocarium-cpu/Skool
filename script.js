@@ -478,51 +478,36 @@ async function openMainApp() {
 
 function addClassControls() {
 
-    const classInfo = document.querySelector(".class-info");
+    const logoutButton = document.getElementById("logout-button");
 
-    if (!classInfo) {
+    if (!logoutButton) {
         return;
     }
 
-    const oldControls = document.getElementById("skool-class-controls");
+    // Évite les doublons
+    const oldButton = document.getElementById("leave-class-button");
 
-    if (oldControls) {
-        oldControls.remove();
+    if (oldButton) {
+        oldButton.remove();
     }
-
-    const controls = document.createElement("div");
-
-    controls.id = "skool-class-controls";
-    controls.style.display = "flex";
-    controls.style.alignItems = "center";
-    controls.style.gap = "8px";
-    controls.style.marginTop = "8px";
-
-    const roleBadge = document.createElement("span");
-
-    roleBadge.textContent = isAdmin()
-        ? "👑 Admin"
-        : "Membre";
-
-    roleBadge.style.fontSize = "12px";
-    roleBadge.style.fontWeight = "600";
-    roleBadge.style.opacity = "0.8";
 
     const leaveButton = document.createElement("button");
 
     leaveButton.id = "leave-class-button";
     leaveButton.type = "button";
     leaveButton.textContent = "Quitter la classe";
-    leaveButton.className = "small-button";
+
+    // Même style de base que les autres boutons
+    leaveButton.className = logoutButton.className;
 
     leaveButton.addEventListener("click", leaveClass);
 
-    controls.appendChild(roleBadge);
-    controls.appendChild(leaveButton);
-
-    classInfo.appendChild(controls);
+    // Place le bouton juste avant Déconnexion
+    logoutButton.parentNode.insertBefore(
+        leaveButton,
+        logoutButton
+    );
 }
-
 
 // ==========================================
 // QUITTER LA CLASSE
