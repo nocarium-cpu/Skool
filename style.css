@@ -540,6 +540,8 @@ textarea {
     line-height: 1.6;
     margin-top: 12px;
     white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .item-date {
