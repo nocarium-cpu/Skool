@@ -264,34 +264,18 @@ async function loadUserClass() {
 
     try {
 
-        const { data: membership, error: membershipError } = await db
-            .from("class_members")
-            .select("class_id, role")
-            .eq("user_id", currentUser.id)
-            .limit(1)
-            .maybeSingle();
-
-        if (membershipError) {
-            throw membershipError;
-        }
-
-        if (!membership) {
-
-            showScreen(classScreen);
-
-            return;
-        }
-
         const { data: classData, error: classError } = await db
-            .from("classes")
-            .select("*")
-            .eq("id", membership.class_id)
-            .single();
-
+            .rpc("get_my_class");
+        
         if (classError) {
             throw classError;
         }
-
+        
+        if (!classData || !classData.id) {
+            showScreen(classScreen);
+            return;
+        }
+        
         currentClass = classData;
 
         await openMainApp();
