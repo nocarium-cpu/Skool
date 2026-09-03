@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#111111">
+    <title>SKOOL</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="app">
+
+        <!-- ============================= -->
+        <!-- ÉCRAN DE CONNEXION -->
+        <!-- ============================= -->
+
+        <section id="auth-screen" class="screen active">
+
+            <div class="auth-container">
+
+                <div class="logo">
+                    <span>SKOOL</span>
+                </div>
+
+                <p class="tagline">
+                    Tout pour ta classe, au même endroit.
+                </p>
+
+                <!-- CONNEXION -->
+
+                <div id="login-form" class="auth-form">
+
+                    <h1>Connexion</h1>
+
+                    <p class="form-description">
+                        Connecte-toi pour retrouver ta classe.
+                    </p>
+
+                    <input
+                        type="email"
+                        id="login-email"
+                        placeholder="Adresse e-mail"
+                        autocomplete="email"
+                    >
+
+                    <input
+                        type="password"
+                        id="login-password"
+                        placeholder="Mot de passe"
+                        autocomplete="current-password"
+                    >
+
+                    <button id="login-button" class="primary-button">
+                        Se connecter
+                    </button>
+
+                    <p id="login-error" class="error-message"></p>
+
+                    <button id="show-register" class="text-button">
+                        Créer un compte
+                    </button>
+
+                </div>
+
+
+                <!-- INSCRIPTION -->
+
+                <div id="register-form" class="auth-form hidden">
+
+                    <h1>Créer un compte</h1>
+
+                    <p class="form-description">
+                        Rejoins SKOOL gratuitement.
+                    </p>
+
+                    <input
+                        type="text"
+                        id="register-name"
+                        placeholder="Prénom"
+                        autocomplete="given-name"
+                    >
+
+                    <input
+                        type="email"
+                        id="register-email"
+                        placeholder="Adresse e-mail"
+                        autocomplete="email"
+                    >
+
+                    <input
+                        type="password"
+                        id="register-password"
+                        placeholder="Mot de passe"
+                        autocomplete="new-password"
+                    >
+
+                    <button id="register-button" class="primary-button">
+                        Créer mon compte
+                    </button>
+
+                    <p id="register-error" class="error-message"></p>
+
+                    <button id="show-login" class="text-button">
+                        J'ai déjà un compte
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ============================= -->
+        <!-- CHOIX DE LA CLASSE -->
+        <!-- ============================= -->
+
+        <section id="class-screen" class="screen">
+
+            <div class="class-container">
+
+                <div class="logo small-logo">
+                    SKOOL
+                </div>
+
+                <h1>Bienvenue sur SKOOL 👋</h1>
+
+                <p class="section-description">
+                    Pour commencer, crée ta classe ou rejoins celle de tes camarades.
+                </p>
+
+
+                <div class="class-options">
+
+                    <!-- CRÉER -->
+
+                    <div class="class-card">
+
+                        <div class="card-icon">
+                            🏫
+                        </div>
+
+                        <h2>Créer une classe</h2>
+
+                        <p>
+                            Crée un espace partagé pour ta classe.
+                        </p>
+
+                        <input
+                            type="text"
+                            id="new-class-name"
+                            placeholder="Nom de la classe"
+                        >
+
+                        <button id="create-class-button" class="primary-button">
+                            Créer la classe
+                        </button>
+
+                    </div>
+
+
+                    <div class="separator">
+                        <span>OU</span>
+                    </div>
+
+
+                    <!-- REJOINDRE -->
+
+                    <div class="class-card">
+
+                        <div class="card-icon">
+                            🔑
+                        </div>
+
+                        <h2>Rejoindre une classe</h2>
+
+                        <p>
+                            Entre le code donné par un camarade.
+                        </p>
+
+                        <input
+                            type="text"
+                            id="join-class-code"
+                            placeholder="Ex : ABC-123"
+                            maxlength="7"
+                        >
+
+                        <button id="join-class-button" class="secondary-button">
+                            Rejoindre
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <p id="class-error" class="error-message"></p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ============================= -->
+        <!-- APPLICATION PRINCIPALE -->
+        <!-- ============================= -->
+
+        <section id="main-screen" class="screen">
+
+            <!-- HEADER -->
+
+            <header class="topbar">
+
+                <div class="brand">
+                    SKOOL
+                </div>
+
+                <div class="class-info">
+
+                    <span id="current-class-name">
+                        Ma classe
+                    </span>
+
+                    <span id="current-class-code" class="class-code">
+                        ---
+                    </span>
+
+                </div>
+
+                <button id="logout-button" class="logout-button">
+                    Déconnexion
+                </button>
+
+            </header>
+
+
+            <!-- NAVIGATION -->
+
+            <nav class="navigation">
+
+                <button
+                    class="nav-button active"
+                    data-page="dashboard"
+                >
+                    🏠
+                    <span>Accueil</span>
+                </button>
+
+                <button
+                    class="nav-button"
+                    data-page="courses"
+                >
+                    📚
+                    <span>Cours</span>
+                </button>
+
+                <button
+                    class="nav-button"
+                    data-page="homework"
+                >
+                    📝
+                    <span>Devoirs</span>
+                </button>
+
+                <button
+                    class="nav-button"
+                    data-page="calendar"
+                >
+                    📅
+                    <span>Calendrier</span>
+                </button>
+
+            </nav>
+
+
+            <!-- CONTENU -->
+
+            <main class="content">
+
+                <!-- ============================= -->
+                <!-- ACCUEIL -->
+                <!-- ============================= -->
+
+                <div id="page-dashboard" class="page active">
+
+                    <div class="page-header">
+
+                        <div>
+                            <p class="welcome-small">
+                                Bienvenue 👋
+                            </p>
+
+                            <h1 id="welcome-name">
+                                Bonjour !
+                            </h1>
+                        </div>
+
+                    </div>
+
+
+                    <div class="dashboard-grid">
+
+                        <div class="dashboard-card">
+
+                            <span class="dashboard-icon">
+                                📝
+                            </span>
+
+                            <div>
+                                <p>Prochains devoirs</p>
+                                <strong id="dashboard-homework-count">
+                                    0
+                                </strong>
+                            </div>
+
+                        </div>
+
+
+                        <div class="dashboard-card">
+
+                            <span class="dashboard-icon">
+                                📚
+                            </span>
+
+                            <div>
+                                <p>Cours disponibles</p>
+                                <strong id="dashboard-course-count">
+                                    0
+                                </strong>
+                            </div>
+
+                        </div>
+
+
+                        <div class="dashboard-card">
+
+                            <span class="dashboard-icon">
+                                📅
+                            </span>
+
+                            <div>
+                                <p>Événements</p>
+                                <strong id="dashboard-event-count">
+                                    0
+                                </strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="dashboard-section">
+
+                        <div class="section-title-row">
+
+                            <h2>
+                                Prochains devoirs
+                            </h2>
+
+                            <button
+                                class="link-button"
+                                data-page-target="homework"
+                            >
+                                Voir tout
+                            </button>
+
+                        </div>
+
+                        <div id="dashboard-homework-list" class="items-list">
+
+                            <div class="empty-state">
+                                Aucun devoir pour le moment.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="dashboard-section">
+
+                        <div class="section-title-row">
+
+                            <h2>
+                                Derniers cours
+                            </h2>
+
+                            <button
+                                class="link-button"
+                                data-page-target="courses"
+                            >
+                                Voir tout
+                            </button>
+
+                        </div>
+
+                        <div id="dashboard-course-list" class="items-list">
+
+                            <div class="empty-state">
+                                Aucun cours pour le moment.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ============================= -->
+                <!-- COURS -->
+                <!-- ============================= -->
+
+                <div id="page-courses" class="page">
+
+                    <div class="page-header">
+
+                        <div>
+                            <p class="welcome-small">
+                                Classe
+                            </p>
+
+                            <h1>
+                                📚 Cours
+                            </h1>
+                        </div>
+
+                        <button
+                            id="add-course-button"
+                            class="primary-button small-button"
+                        >
+                            + Ajouter
+                        </button>
+
+                    </div>
+
+
+                    <!-- FORMULAIRE COURS -->
+
+                    <div
+                        id="course-form"
+                        class="add-form hidden"
+                    >
+
+                        <h2>
+                            Ajouter un cours
+                        </h2>
+
+                        <input
+                            type="text"
+                            id="course-subject"
+                            placeholder="Matière"
+                        >
+
+                        <input
+                            type="text"
+                            id="course-title"
+                            placeholder="Titre du cours"
+                        >
+
+                        <textarea
+                            id="course-content"
+                            placeholder="Contenu du cours..."
+                        ></textarea>
+
+                        <div class="form-actions">
+
+                            <button
+                                id="save-course-button"
+                                class="primary-button"
+                            >
+                                Ajouter le cours
+                            </button>
+
+                            <button
+                                id="cancel-course-button"
+                                class="secondary-button"
+                            >
+                                Annuler
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="courses-list"
+                        class="content-list"
+                    >
+
+                        <div class="empty-state">
+                            Aucun cours pour le moment.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ============================= -->
+                <!-- DEVOIRS -->
+                <!-- ============================= -->
+
+                <div id="page-homework" class="page">
+
+                    <div class="page-header">
+
+                        <div>
+                            <p class="welcome-small">
+                                Classe
+                            </p>
+
+                            <h1>
+                                📝 Devoirs
+                            </h1>
+                        </div>
+
+                        <button
+                            id="add-homework-button"
+                            class="primary-button small-button"
+                        >
+                            + Ajouter
+                        </button>
+
+                    </div>
+
+
+                    <!-- FORMULAIRE DEVOIR -->
+
+                    <div
+                        id="homework-form"
+                        class="add-form hidden"
+                    >
+
+                        <h2>
+                            Ajouter un devoir
+                        </h2>
+
+                        <input
+                            type="text"
+                            id="homework-subject"
+                            placeholder="Matière"
+                        >
+
+                        <input
+                            type="text"
+                            id="homework-title"
+                            placeholder="Titre du devoir"
+                        >
+
+                        <textarea
+                            id="homework-description"
+                            placeholder="Description..."
+                        ></textarea>
+
+                        <label for="homework-date">
+                            Date de rendu
+                        </label>
+
+                        <input
+                            type="date"
+                            id="homework-date"
+                        >
+
+                        <div class="form-actions">
+
+                            <button
+                                id="save-homework-button"
+                                class="primary-button"
+                            >
+                                Ajouter le devoir
+                            </button>
+
+                            <button
+                                id="cancel-homework-button"
+                                class="secondary-button"
+                            >
+                                Annuler
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="homework-list"
+                        class="content-list"
+                    >
+
+                        <div class="empty-state">
+                            Aucun devoir pour le moment.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ============================= -->
+                <!-- CALENDRIER -->
+                <!-- ============================= -->
+
+                <div id="page-calendar" class="page">
+
+                    <div class="page-header">
+
+                        <div>
+                            <p class="welcome-small">
+                                Classe
+                            </p>
+
+                            <h1>
+                                📅 Calendrier
+                            </h1>
+                        </div>
+
+                        <button
+                            id="add-event-button"
+                            class="primary-button small-button"
+                        >
+                            + Ajouter
+                        </button>
+
+                    </div>
+
+
+                    <!-- FORMULAIRE ÉVÉNEMENT -->
+
+                    <div
+                        id="event-form"
+                        class="add-form hidden"
+                    >
+
+                        <h2>
+                            Ajouter un événement
+                        </h2>
+
+                        <input
+                            type="text"
+                            id="event-title"
+                            placeholder="Nom de l'événement"
+                        >
+
+                        <textarea
+                            id="event-description"
+                            placeholder="Description..."
+                        ></textarea>
+
+                        <label for="event-date">
+                            Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="event-date"
+                        >
+
+                        <label for="event-type">
+                            Type
+                        </label>
+
+                        <select id="event-type">
+
+                            <option value="other">
+                                Autre
+                            </option>
+
+                            <option value="test">
+                                Contrôle
+                            </option>
+
+                            <option value="homework">
+                                Devoir
+                            </option>
+
+                            <option value="event">
+                                Événement
+                            </option>
+
+                        </select>
+
+                        <div class="form-actions">
+
+                            <button
+                                id="save-event-button"
+                                class="primary-button"
+                            >
+                                Ajouter
+                            </button>
+
+                            <button
+                                id="cancel-event-button"
+                                class="secondary-button"
+                            >
+                                Annuler
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="events-list"
+                        class="content-list"
+                    >
+
+                        <div class="empty-state">
+                            Aucun événement pour le moment.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </main>
+
+        </section>
+
+    </div>
+
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- NOTRE JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+</html>
