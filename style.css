@@ -145,6 +145,7 @@ textarea {
    ========================================== */
 
 .primary-button,
+.danger-button,
 .secondary-button {
     border-radius: 12px;
     padding: 13px 18px;
