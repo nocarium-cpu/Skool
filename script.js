@@ -1,5 +1,5 @@
 // ==========================================
-// SKOOL — JAVASCRIPT V2
+// SKOOL — JAVASCRIPT V3
 // ==========================================
 
 // ==========================================
@@ -465,7 +465,7 @@ async function openMainApp() {
 
     document.getElementById("current-class-code").textContent =
         currentClass.join_code;
-    
+
     await loadAllData();
 }
 
@@ -507,11 +507,6 @@ async function leaveClass() {
         currentClass = null;
         currentClassRole = "member";
 
-        // Supprime le bouton
-        if (button) {
-            button.remove();
-        }
-
         // Retour à l'écran de sélection de classe
         showScreen(classScreen);
 
@@ -522,6 +517,8 @@ async function leaveClass() {
         alert(
             error.message || "Impossible de quitter la classe."
         );
+
+    } finally {
 
         if (button) {
             button.disabled = false;
@@ -580,8 +577,11 @@ function switchPage(pageName) {
 
 
 // ==========================================
-// DÉCONNEXION DU COMPTE
+// QUITTER LA CLASSE / DÉCONNEXION DU COMPTE
 // ==========================================
+
+document.getElementById("leave-class-button").addEventListener("click", leaveClass);
+
 document.getElementById("logout-button").addEventListener("click", async () => {
 
     try {
@@ -1283,7 +1283,7 @@ function renderCourses(courses) {
                 <div style="display:flex; gap:8px; margin-top:12px;">
                     <button
                         type="button"
-                        class="small-button"
+                        class="small-button secondary-button"
                         data-action="edit-course"
                         data-id="${escapeHTML(course.id)}">
                         Modifier
@@ -1291,7 +1291,7 @@ function renderCourses(courses) {
 
                     <button
                         type="button"
-                        class="small-button"
+                        class="small-button danger-button"
                         data-action="delete-course"
                         data-id="${escapeHTML(course.id)}">
                         Supprimer
@@ -1455,7 +1455,7 @@ function renderHomework(homework) {
                 <div style="display:flex; gap:8px; margin-top:12px;">
                     <button
                         type="button"
-                        class="small-button"
+                        class="small-button secondary-button"
                         data-action="edit-homework"
                         data-id="${escapeHTML(item.id)}">
                         Modifier
@@ -1463,7 +1463,7 @@ function renderHomework(homework) {
 
                     <button
                         type="button"
-                        class="small-button"
+                        class="small-button danger-button"
                         data-action="delete-homework"
                         data-id="${escapeHTML(item.id)}">
                         Supprimer
@@ -1639,7 +1639,7 @@ function renderEvents(events) {
                 <div style="display:flex; gap:8px; margin-top:12px;">
                     <button
                         type="button"
-                        class="small-button"
+                        class="small-button secondary-button"
                         data-action="edit-event"
                         data-id="${escapeHTML(event.id)}">
                         Modifier
@@ -1647,7 +1647,7 @@ function renderEvents(events) {
 
                     <button
                         type="button"
-                        class="small-button"
+                        class="small-button danger-button"
                         data-action="delete-event"
                         data-id="${escapeHTML(event.id)}">
                         Supprimer
@@ -1780,22 +1780,6 @@ db.auth.onAuthStateChange(async (event, session) => {
 
         showScreen(authScreen);
     }
-});
-
-
-// ==========================================
-// BOUTON QUITTER LA CLASSE
-// ==========================================
-
-document.addEventListener("click", (event) => {
-
-    const button = event.target.closest("#leave-class-button");
-
-    if (!button) {
-        return;
-    }
-
-    leaveClass();
 });
 
 
