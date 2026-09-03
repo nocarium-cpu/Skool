@@ -529,6 +529,13 @@ async function leaveClass() {
         return;
     }
 
+    const button = document.getElementById("leave-class-button");
+
+    if (button) {
+        button.disabled = true;
+        button.textContent = "Déconnexion...";
+    }
+
     try {
 
         const { error } = await db.rpc("leave_class");
@@ -540,13 +547,13 @@ async function leaveClass() {
         currentClass = null;
         currentClassRole = "member";
 
-        showScreen(classScreen);
-
-        const controls = document.getElementById("skool-class-controls");
-
-        if (controls) {
-            controls.remove();
+        // Supprime le bouton
+        if (button) {
+            button.remove();
         }
+
+        // Retour à l'écran de sélection de classe
+        showScreen(classScreen);
 
     } catch (error) {
 
@@ -555,6 +562,11 @@ async function leaveClass() {
         alert(
             error.message || "Impossible de quitter la classe."
         );
+
+        if (button) {
+            button.disabled = false;
+            button.textContent = "Quitter la classe";
+        }
     }
 }
 
