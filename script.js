@@ -1788,11 +1788,16 @@ db.auth.onAuthStateChange(async (event, session) => {
 // BOUTON QUITTER LA CLASSE
 // ==========================================
 
-const leaveClassButton = document.getElementById("leave-class-button");
+document.addEventListener("click", (event) => {
 
-if (leaveClassButton) {
-    leaveClassButton.addEventListener("click", leaveClass);
-}
+    const button = event.target.closest("#leave-class-button");
+
+    if (!button) {
+        return;
+    }
+
+    leaveClass();
+});
 
 
 // ==========================================
