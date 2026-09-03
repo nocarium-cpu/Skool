@@ -469,44 +469,6 @@ async function openMainApp() {
     await loadAllData();
 }
 
-
-// ==========================================
-// CONTRÔLES DE LA CLASSE
-// ==========================================
-
-function addClassControls() {
-
-    const logoutButton = document.getElementById("logout-button");
-
-    if (!logoutButton) {
-        return;
-    }
-
-    // Évite les doublons
-    const oldButton = document.getElementById("leave-class-button");
-
-    if (oldButton) {
-        oldButton.remove();
-    }
-
-    const leaveButton = document.createElement("button");
-
-    leaveButton.id = "leave-class-button";
-    leaveButton.type = "button";
-    leaveButton.textContent = "Quitter la classe";
-
-    // Même style de base que les autres boutons
-    leaveButton.className = logoutButton.className;
-
-    leaveButton.addEventListener("click", leaveClass);
-
-    // Place le bouton juste avant Déconnexion
-    logoutButton.parentNode.insertBefore(
-        leaveButton,
-        logoutButton
-    );
-}
-
 // ==========================================
 // QUITTER LA CLASSE
 // ==========================================
