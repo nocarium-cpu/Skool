@@ -465,9 +465,7 @@ async function openMainApp() {
 
     document.getElementById("current-class-code").textContent =
         currentClass.join_code;
-
-    addClassControls();
-
+    
     await loadAllData();
 }
 
