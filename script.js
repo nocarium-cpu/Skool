@@ -1,5 +1,5 @@
 // ==========================================
-// SKOOL — JAVASCRIPT V1
+// SKOOL — JAVASCRIPT V2
 // ==========================================
 
 // ==========================================
@@ -19,6 +19,11 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
 let currentClass = null;
+let currentClassRole = "member";
+
+let editingCourseId = null;
+let editingHomeworkId = null;
+let editingEventId = null;
 
 
 // ==========================================
@@ -83,9 +88,23 @@ function formatDate(dateString) {
     });
 }
 
+function isAdmin() {
+    return currentClassRole === "admin";
+}
+
+function canModifyItem(item) {
+    return (
+        currentUser &&
+        (
+            item.user_id === currentUser.id ||
+            isAdmin()
+        )
+    );
+}
+
 
 // ==========================================
-// AFFICHER LES FORMULAIRES CONNEXION / INSCRIPTION
+// AFFICHER LES FORMULAIRES
 // ==========================================
 
 document.getElementById("show-register").addEventListener("click", () => {
@@ -153,11 +172,6 @@ document.getElementById("register-button").addEventListener("click", async () =>
         if (error) {
             throw error;
         }
-
-        /*
-         * Si la confirmation e-mail est activée dans Supabase,
-         * session sera null et l'utilisateur devra confirmer son adresse.
-         */
 
         if (!data.session) {
 
@@ -250,7 +264,7 @@ document.getElementById("login-button").addEventListener("click", async () => {
 
 
 // ==========================================
-// CHARGER LA CLASSE DE L'UTILISATEUR
+// CHARGER LA CLASSE
 // ==========================================
 
 async function loadUserClass() {
@@ -266,17 +280,30 @@ async function loadUserClass() {
 
         const { data: classData, error: classError } = await db
             .rpc("get_my_class");
-        
+
         if (classError) {
             throw classError;
         }
-        
+
         if (!classData || !classData.id) {
+
+            currentClass = null;
+            currentClassRole = "member";
+
             showScreen(classScreen);
             return;
         }
-        
+
         currentClass = classData;
+
+        const { data: roleData, error: roleError } = await db
+            .rpc("get_my_class_role");
+
+        if (roleError) {
+            throw roleError;
+        }
+
+        currentClassRole = roleData || "member";
 
         await openMainApp();
 
@@ -324,15 +351,13 @@ document.getElementById("create-class-button").addEventListener("click", async (
             throw error;
         }
 
-        /*
-         * La fonction SQL retourne la classe créée.
-         */
-
         currentClass = Array.isArray(data) ? data[0] : data;
 
         if (!currentClass || !currentClass.id) {
             throw new Error("La classe n'a pas pu être récupérée.");
         }
+
+        currentClassRole = "admin";
 
         document.getElementById("new-class-name").value = "";
 
@@ -395,6 +420,8 @@ document.getElementById("join-class-button").addEventListener("click", async () 
             throw new Error("La classe n'a pas pu être récupérée.");
         }
 
+        currentClassRole = "member";
+
         document.getElementById("join-class-code").value = "";
 
         await openMainApp();
@@ -405,7 +432,8 @@ document.getElementById("join-class-button").addEventListener("click", async () 
 
         setError(
             "class-error",
-            error.message || "Code incorrect ou impossible de rejoindre la classe."
+            error.message ||
+            "Code incorrect ou impossible de rejoindre la classe."
         );
 
     } finally {
@@ -438,7 +466,111 @@ async function openMainApp() {
     document.getElementById("current-class-code").textContent =
         currentClass.join_code;
 
+    addClassControls();
+
     await loadAllData();
+}
+
+
+// ==========================================
+// CONTRÔLES DE LA CLASSE
+// ==========================================
+
+function addClassControls() {
+
+    const classInfo = document.querySelector(".class-info");
+
+    if (!classInfo) {
+        return;
+    }
+
+    const oldControls = document.getElementById("skool-class-controls");
+
+    if (oldControls) {
+        oldControls.remove();
+    }
+
+    const controls = document.createElement("div");
+
+    controls.id = "skool-class-controls";
+    controls.style.display = "flex";
+    controls.style.alignItems = "center";
+    controls.style.gap = "8px";
+    controls.style.marginTop = "8px";
+
+    const roleBadge = document.createElement("span");
+
+    roleBadge.textContent = isAdmin()
+        ? "👑 Admin"
+        : "Membre";
+
+    roleBadge.style.fontSize = "12px";
+    roleBadge.style.fontWeight = "600";
+    roleBadge.style.opacity = "0.8";
+
+    const leaveButton = document.createElement("button");
+
+    leaveButton.id = "leave-class-button";
+    leaveButton.type = "button";
+    leaveButton.textContent = "Quitter la classe";
+    leaveButton.className = "small-button";
+
+    leaveButton.addEventListener("click", leaveClass);
+
+    controls.appendChild(roleBadge);
+    controls.appendChild(leaveButton);
+
+    classInfo.appendChild(controls);
+}
+
+
+// ==========================================
+// QUITTER LA CLASSE
+// ==========================================
+
+async function leaveClass() {
+
+    if (!currentClass) {
+        return;
+    }
+
+    const confirmation = confirm(
+        isAdmin()
+            ? "Tu es administrateur. Si tu quittes cette classe, un autre membre deviendra automatiquement administrateur. Continuer ?"
+            : "Veux-tu vraiment quitter cette classe ?"
+    );
+
+    if (!confirmation) {
+        return;
+    }
+
+    try {
+
+        const { error } = await db.rpc("leave_class");
+
+        if (error) {
+            throw error;
+        }
+
+        currentClass = null;
+        currentClassRole = "member";
+
+        showScreen(classScreen);
+
+        const controls = document.getElementById("skool-class-controls");
+
+        if (controls) {
+            controls.remove();
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            error.message || "Impossible de quitter la classe."
+        );
+    }
 }
 
 
@@ -491,7 +623,7 @@ function switchPage(pageName) {
 
 
 // ==========================================
-// DÉCONNEXION
+// DÉCONNEXION DU COMPTE
 // ==========================================
 
 document.getElementById("logout-button").addEventListener("click", async () => {
@@ -503,11 +635,11 @@ document.getElementById("logout-button").addEventListener("click", async () => {
     } catch (error) {
 
         console.error(error);
-
     }
 
     currentUser = null;
     currentClass = null;
+    currentClassRole = "member";
 
     showScreen(authScreen);
 
@@ -527,17 +659,35 @@ document.getElementById("logout-button").addEventListener("click", async () => {
 
 document.getElementById("add-course-button").addEventListener("click", () => {
 
+    editingCourseId = null;
+
     document.getElementById("course-form").classList.remove("hidden");
+
+    document.getElementById("save-course-button").textContent =
+        "Ajouter le cours";
 });
 
+
 document.getElementById("cancel-course-button").addEventListener("click", () => {
+
+    resetCourseForm();
+});
+
+
+function resetCourseForm() {
+
+    editingCourseId = null;
 
     document.getElementById("course-form").classList.add("hidden");
 
     document.getElementById("course-subject").value = "";
     document.getElementById("course-title").value = "";
     document.getElementById("course-content").value = "";
-});
+
+    document.getElementById("save-course-button").textContent =
+        "Ajouter le cours";
+}
+
 
 document.getElementById("save-course-button").addEventListener("click", async () => {
 
@@ -557,29 +707,48 @@ document.getElementById("save-course-button").addEventListener("click", async ()
     const button = document.getElementById("save-course-button");
 
     button.disabled = true;
-    button.textContent = "Ajout...";
+    button.textContent = editingCourseId
+        ? "Modification..."
+        : "Ajout...";
 
     try {
 
-        const { error } = await db
-            .from("courses")
-            .insert({
-                class_id: currentClass.id,
-                user_id: currentUser.id,
-                subject: subject,
-                title: title,
-                content: content
-            });
+        let error;
+
+        if (editingCourseId) {
+
+            const result = await db
+                .from("courses")
+                .update({
+                    subject: subject,
+                    title: title,
+                    content: content
+                })
+                .eq("id", editingCourseId)
+                .eq("class_id", currentClass.id);
+
+            error = result.error;
+
+        } else {
+
+            const result = await db
+                .from("courses")
+                .insert({
+                    class_id: currentClass.id,
+                    user_id: currentUser.id,
+                    subject: subject,
+                    title: title,
+                    content: content
+                });
+
+            error = result.error;
+        }
 
         if (error) {
             throw error;
         }
 
-        document.getElementById("course-form").classList.add("hidden");
-
-        document.getElementById("course-subject").value = "";
-        document.getElementById("course-title").value = "";
-        document.getElementById("course-content").value = "";
+        resetCourseForm();
 
         await loadCourses();
 
@@ -588,15 +757,91 @@ document.getElementById("save-course-button").addEventListener("click", async ()
         console.error(error);
 
         alert(
-            error.message || "Impossible d'ajouter le cours."
+            error.message ||
+            "Impossible d'enregistrer le cours."
         );
 
     } finally {
 
         button.disabled = false;
-        button.textContent = "Ajouter le cours";
+
+        if (!editingCourseId) {
+            button.textContent = "Ajouter le cours";
+        }
     }
 });
+
+
+// ==========================================
+// MODIFIER UN COURS
+// ==========================================
+
+function editCourse(course) {
+
+    if (!canModifyItem(course)) {
+        return;
+    }
+
+    editingCourseId = course.id;
+
+    document.getElementById("course-subject").value =
+        course.subject || "";
+
+    document.getElementById("course-title").value =
+        course.title || "";
+
+    document.getElementById("course-content").value =
+        course.content || "";
+
+    document.getElementById("course-form").classList.remove("hidden");
+
+    document.getElementById("save-course-button").textContent =
+        "Enregistrer les modifications";
+
+    document.getElementById("course-form").scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+}
+
+
+// ==========================================
+// SUPPRIMER UN COURS
+// ==========================================
+
+async function deleteCourse(course) {
+
+    if (!canModifyItem(course)) {
+        return;
+    }
+
+    if (!confirm(`Supprimer le cours "${course.title}" ?`)) {
+        return;
+    }
+
+    try {
+
+        const { error } = await db
+            .from("courses")
+            .delete()
+            .eq("id", course.id)
+            .eq("class_id", currentClass.id);
+
+        if (error) {
+            throw error;
+        }
+
+        await loadCourses();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            error.message || "Impossible de supprimer le cours."
+        );
+    }
+}
 
 
 // ==========================================
@@ -605,10 +850,24 @@ document.getElementById("save-course-button").addEventListener("click", async ()
 
 document.getElementById("add-homework-button").addEventListener("click", () => {
 
+    editingHomeworkId = null;
+
     document.getElementById("homework-form").classList.remove("hidden");
+
+    document.getElementById("save-homework-button").textContent =
+        "Ajouter le devoir";
 });
 
+
 document.getElementById("cancel-homework-button").addEventListener("click", () => {
+
+    resetHomeworkForm();
+});
+
+
+function resetHomeworkForm() {
+
+    editingHomeworkId = null;
 
     document.getElementById("homework-form").classList.add("hidden");
 
@@ -616,7 +875,11 @@ document.getElementById("cancel-homework-button").addEventListener("click", () =
     document.getElementById("homework-title").value = "";
     document.getElementById("homework-description").value = "";
     document.getElementById("homework-date").value = "";
-});
+
+    document.getElementById("save-homework-button").textContent =
+        "Ajouter le devoir";
+}
+
 
 document.getElementById("save-homework-button").addEventListener("click", async () => {
 
@@ -626,6 +889,7 @@ document.getElementById("save-homework-button").addEventListener("click", async 
 
     const subject = document.getElementById("homework-subject").value.trim();
     const title = document.getElementById("homework-title").value.trim();
+
     const description = document
         .getElementById("homework-description")
         .value
@@ -641,31 +905,50 @@ document.getElementById("save-homework-button").addEventListener("click", async 
     const button = document.getElementById("save-homework-button");
 
     button.disabled = true;
-    button.textContent = "Ajout...";
+    button.textContent = editingHomeworkId
+        ? "Modification..."
+        : "Ajout...";
 
     try {
 
-        const { error } = await db
-            .from("homework")
-            .insert({
-                class_id: currentClass.id,
-                user_id: currentUser.id,
-                subject: subject,
-                title: title,
-                description: description,
-                due_date: dueDate
-            });
+        let error;
+
+        if (editingHomeworkId) {
+
+            const result = await db
+                .from("homework")
+                .update({
+                    subject: subject,
+                    title: title,
+                    description: description,
+                    due_date: dueDate
+                })
+                .eq("id", editingHomeworkId)
+                .eq("class_id", currentClass.id);
+
+            error = result.error;
+
+        } else {
+
+            const result = await db
+                .from("homework")
+                .insert({
+                    class_id: currentClass.id,
+                    user_id: currentUser.id,
+                    subject: subject,
+                    title: title,
+                    description: description,
+                    due_date: dueDate
+                });
+
+            error = result.error;
+        }
 
         if (error) {
             throw error;
         }
 
-        document.getElementById("homework-form").classList.add("hidden");
-
-        document.getElementById("homework-subject").value = "";
-        document.getElementById("homework-title").value = "";
-        document.getElementById("homework-description").value = "";
-        document.getElementById("homework-date").value = "";
+        resetHomeworkForm();
 
         await loadHomework();
 
@@ -674,15 +957,90 @@ document.getElementById("save-homework-button").addEventListener("click", async 
         console.error(error);
 
         alert(
-            error.message || "Impossible d'ajouter le devoir."
+            error.message ||
+            "Impossible d'enregistrer le devoir."
         );
 
     } finally {
 
         button.disabled = false;
-        button.textContent = "Ajouter le devoir";
     }
 });
+
+
+// ==========================================
+// MODIFIER UN DEVOIR
+// ==========================================
+
+function editHomework(item) {
+
+    if (!canModifyItem(item)) {
+        return;
+    }
+
+    editingHomeworkId = item.id;
+
+    document.getElementById("homework-subject").value =
+        item.subject || "";
+
+    document.getElementById("homework-title").value =
+        item.title || "";
+
+    document.getElementById("homework-description").value =
+        item.description || "";
+
+    document.getElementById("homework-date").value =
+        item.due_date || "";
+
+    document.getElementById("homework-form").classList.remove("hidden");
+
+    document.getElementById("save-homework-button").textContent =
+        "Enregistrer les modifications";
+
+    document.getElementById("homework-form").scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+}
+
+
+// ==========================================
+// SUPPRIMER UN DEVOIR
+// ==========================================
+
+async function deleteHomework(item) {
+
+    if (!canModifyItem(item)) {
+        return;
+    }
+
+    if (!confirm(`Supprimer le devoir "${item.title}" ?`)) {
+        return;
+    }
+
+    try {
+
+        const { error } = await db
+            .from("homework")
+            .delete()
+            .eq("id", item.id)
+            .eq("class_id", currentClass.id);
+
+        if (error) {
+            throw error;
+        }
+
+        await loadHomework();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            error.message || "Impossible de supprimer le devoir."
+        );
+    }
+}
 
 
 // ==========================================
@@ -691,10 +1049,24 @@ document.getElementById("save-homework-button").addEventListener("click", async 
 
 document.getElementById("add-event-button").addEventListener("click", () => {
 
+    editingEventId = null;
+
     document.getElementById("event-form").classList.remove("hidden");
+
+    document.getElementById("save-event-button").textContent =
+        "Ajouter";
 });
 
+
 document.getElementById("cancel-event-button").addEventListener("click", () => {
+
+    resetEventForm();
+});
+
+
+function resetEventForm() {
+
+    editingEventId = null;
 
     document.getElementById("event-form").classList.add("hidden");
 
@@ -702,7 +1074,11 @@ document.getElementById("cancel-event-button").addEventListener("click", () => {
     document.getElementById("event-description").value = "";
     document.getElementById("event-date").value = "";
     document.getElementById("event-type").value = "other";
-});
+
+    document.getElementById("save-event-button").textContent =
+        "Ajouter";
+}
+
 
 document.getElementById("save-event-button").addEventListener("click", async () => {
 
@@ -718,7 +1094,6 @@ document.getElementById("save-event-button").addEventListener("click", async () 
         .trim();
 
     const eventDate = document.getElementById("event-date").value;
-
     const eventType = document.getElementById("event-type").value;
 
     if (!title || !eventDate) {
@@ -729,31 +1104,50 @@ document.getElementById("save-event-button").addEventListener("click", async () 
     const button = document.getElementById("save-event-button");
 
     button.disabled = true;
-    button.textContent = "Ajout...";
+    button.textContent = editingEventId
+        ? "Modification..."
+        : "Ajout...";
 
     try {
 
-        const { error } = await db
-            .from("events")
-            .insert({
-                class_id: currentClass.id,
-                user_id: currentUser.id,
-                title: title,
-                description: description,
-                event_date: eventDate,
-                event_type: eventType
-            });
+        let error;
+
+        if (editingEventId) {
+
+            const result = await db
+                .from("events")
+                .update({
+                    title: title,
+                    description: description,
+                    event_date: eventDate,
+                    event_type: eventType
+                })
+                .eq("id", editingEventId)
+                .eq("class_id", currentClass.id);
+
+            error = result.error;
+
+        } else {
+
+            const result = await db
+                .from("events")
+                .insert({
+                    class_id: currentClass.id,
+                    user_id: currentUser.id,
+                    title: title,
+                    description: description,
+                    event_date: eventDate,
+                    event_type: eventType
+                });
+
+            error = result.error;
+        }
 
         if (error) {
             throw error;
         }
 
-        document.getElementById("event-form").classList.add("hidden");
-
-        document.getElementById("event-title").value = "";
-        document.getElementById("event-description").value = "";
-        document.getElementById("event-date").value = "";
-        document.getElementById("event-type").value = "other";
+        resetEventForm();
 
         await loadEvents();
 
@@ -762,15 +1156,91 @@ document.getElementById("save-event-button").addEventListener("click", async () 
         console.error(error);
 
         alert(
-            error.message || "Impossible d'ajouter l'événement."
+            error.message ||
+            "Impossible d'enregistrer l'événement."
         );
 
     } finally {
 
         button.disabled = false;
-        button.textContent = "Ajouter";
     }
 });
+
+
+// ==========================================
+// MODIFIER UN ÉVÉNEMENT
+// ==========================================
+
+function editEvent(event) {
+
+    if (!canModifyItem(event)) {
+        return;
+    }
+
+    editingEventId = event.id;
+
+    document.getElementById("event-title").value =
+        event.title || "";
+
+    document.getElementById("event-description").value =
+        event.description || "";
+
+    document.getElementById("event-date").value =
+        event.event_date || "";
+
+    document.getElementById("event-type").value =
+        event.event_type || "other";
+
+    document.getElementById("event-form").classList.remove("hidden");
+
+    document.getElementById("save-event-button").textContent =
+        "Enregistrer les modifications";
+
+    document.getElementById("event-form").scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+}
+
+
+// ==========================================
+// SUPPRIMER UN ÉVÉNEMENT
+// ==========================================
+
+async function deleteEvent(event) {
+
+    if (!canModifyItem(event)) {
+        return;
+    }
+
+    if (!confirm(`Supprimer l'événement "${event.title}" ?`)) {
+        return;
+    }
+
+    try {
+
+        const { error } = await db
+            .from("events")
+            .delete()
+            .eq("id", event.id)
+            .eq("class_id", currentClass.id);
+
+        if (error) {
+            throw error;
+        }
+
+        await loadEvents();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            error.message ||
+            "Impossible de supprimer l'événement."
+        );
+    }
+}
 
 
 // ==========================================
@@ -852,6 +1322,28 @@ function renderCourses(courses) {
 
     list.innerHTML = courses.map(course => {
 
+        const actions = canModifyItem(course)
+            ? `
+                <div style="display:flex; gap:8px; margin-top:12px;">
+                    <button
+                        type="button"
+                        class="small-button"
+                        data-action="edit-course"
+                        data-id="${escapeHTML(course.id)}">
+                        Modifier
+                    </button>
+
+                    <button
+                        type="button"
+                        class="small-button"
+                        data-action="delete-course"
+                        data-id="${escapeHTML(course.id)}">
+                        Supprimer
+                    </button>
+                </div>
+            `
+            : "";
+
         return `
             <div class="item-card">
 
@@ -879,10 +1371,40 @@ function renderCourses(courses) {
                     ${escapeHTML(course.content)}
                 </div>
 
+                ${actions}
+
             </div>
         `;
 
     }).join("");
+
+    list.querySelectorAll('[data-action="edit-course"]').forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const course = courses.find(
+                item => item.id === button.dataset.id
+            );
+
+            if (course) {
+                editCourse(course);
+            }
+        });
+    });
+
+    list.querySelectorAll('[data-action="delete-course"]').forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const course = courses.find(
+                item => item.id === button.dataset.id
+            );
+
+            if (course) {
+                deleteCourse(course);
+            }
+        });
+    });
 
     const recentCourses = courses.slice(0, 3);
 
@@ -972,6 +1494,28 @@ function renderHomework(homework) {
 
     list.innerHTML = homework.map(item => {
 
+        const actions = canModifyItem(item)
+            ? `
+                <div style="display:flex; gap:8px; margin-top:12px;">
+                    <button
+                        type="button"
+                        class="small-button"
+                        data-action="edit-homework"
+                        data-id="${escapeHTML(item.id)}">
+                        Modifier
+                    </button>
+
+                    <button
+                        type="button"
+                        class="small-button"
+                        data-action="delete-homework"
+                        data-id="${escapeHTML(item.id)}">
+                        Supprimer
+                    </button>
+                </div>
+            `
+            : "";
+
         return `
             <div class="item-card">
 
@@ -1005,10 +1549,40 @@ function renderHomework(homework) {
                         : ""
                 }
 
+                ${actions}
+
             </div>
         `;
 
     }).join("");
+
+    list.querySelectorAll('[data-action="edit-homework"]').forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const item = homework.find(
+                homeworkItem => homeworkItem.id === button.dataset.id
+            );
+
+            if (item) {
+                editHomework(item);
+            }
+        });
+    });
+
+    list.querySelectorAll('[data-action="delete-homework"]').forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const item = homework.find(
+                homeworkItem => homeworkItem.id === button.dataset.id
+            );
+
+            if (item) {
+                deleteHomework(item);
+            }
+        });
+    });
 
     const upcoming = homework.slice(0, 3);
 
@@ -1104,6 +1678,28 @@ function renderEvents(events) {
 
     list.innerHTML = events.map(event => {
 
+        const actions = canModifyItem(event)
+            ? `
+                <div style="display:flex; gap:8px; margin-top:12px;">
+                    <button
+                        type="button"
+                        class="small-button"
+                        data-action="edit-event"
+                        data-id="${escapeHTML(event.id)}">
+                        Modifier
+                    </button>
+
+                    <button
+                        type="button"
+                        class="small-button"
+                        data-action="delete-event"
+                        data-id="${escapeHTML(event.id)}">
+                        Supprimer
+                    </button>
+                </div>
+            `
+            : "";
+
         return `
             <div class="item-card">
 
@@ -1137,10 +1733,40 @@ function renderEvents(events) {
                         : ""
                 }
 
+                ${actions}
+
             </div>
         `;
 
     }).join("");
+
+    list.querySelectorAll('[data-action="edit-event"]').forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const event = events.find(
+                item => item.id === button.dataset.id
+            );
+
+            if (event) {
+                editEvent(event);
+            }
+        });
+    });
+
+    list.querySelectorAll('[data-action="delete-event"]').forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const event = events.find(
+                item => item.id === button.dataset.id
+            );
+
+            if (event) {
+                deleteEvent(event);
+            }
+        });
+    });
 }
 
 
@@ -1194,6 +1820,7 @@ db.auth.onAuthStateChange(async (event, session) => {
 
         currentUser = null;
         currentClass = null;
+        currentClassRole = "member";
 
         showScreen(authScreen);
     }
