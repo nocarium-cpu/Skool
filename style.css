@@ -172,6 +172,15 @@ textarea {
     background: #e3e3e3;
 }
 
+.danger-button {
+    background: #fdeaea;
+    color: var(--danger);
+}
+
+.danger-button:hover {
+    background: #fbdada;
+}
+
 .auth-form .primary-button {
     width: 100%;
     margin-top: 5px;
