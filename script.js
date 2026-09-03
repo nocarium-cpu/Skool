@@ -1,737 +1,1223 @@
-/* ==========================================
-   SKOOL — STYLE V1
-   ========================================== */
+// ==========================================
+// SKOOL — JAVASCRIPT V1
+// ==========================================
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-:root {
-    --bg: #f5f5f7;
-    --card: #ffffff;
-    --text: #111111;
-    --muted: #737373;
-    --border: #e7e7e7;
-    --primary: #111111;
-    --primary-hover: #292929;
-    --danger: #d93636;
-    --radius: 18px;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-}
-
-button,
-input,
-textarea,
-select {
-    font: inherit;
-}
-
-button {
-    cursor: pointer;
-}
-
-input,
-textarea,
-select {
-    width: 100%;
-    border: 1px solid var(--border);
-    background: #fff;
-    color: var(--text);
-    border-radius: 12px;
-    padding: 13px 14px;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-    border-color: #999;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
-}
-
-textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-.hidden {
-    display: none !important;
-}
-
-
-/* ==========================================
-   ÉCRANS
-   ========================================== */
-
-.screen {
-    display: none;
-    min-height: 100vh;
-}
-
-.screen.active {
-    display: block;
-}
-
-
-/* ==========================================
-   AUTHENTIFICATION
-   ========================================== */
-
-#auth-screen {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 30px 20px;
-}
-
-#auth-screen.active {
-    display: flex;
-}
-
-.auth-container {
-    width: 100%;
-    max-width: 430px;
-    text-align: center;
-}
-
-.logo {
-    font-size: 42px;
-    font-weight: 900;
-    letter-spacing: -3px;
-}
-
-.tagline {
-    color: var(--muted);
-    margin-top: 8px;
-    margin-bottom: 35px;
-}
-
-.auth-form {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 28px;
-    text-align: left;
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
-}
-
-.auth-form h1 {
-    font-size: 28px;
-    margin-bottom: 8px;
-}
-
-.form-description {
-    color: var(--muted);
-    font-size: 14px;
-    margin-bottom: 22px;
-}
-
-.auth-form input {
-    margin-bottom: 12px;
-}
-
-
-/* ==========================================
-   BOUTONS
-   ========================================== */
-
-.primary-button,
-.secondary-button {
-    border-radius: 12px;
-    padding: 13px 18px;
-    border: none;
-    font-weight: 700;
-    transition: 0.2s;
-}
-
-.primary-button {
-    background: var(--primary);
-    color: white;
-}
-
-.primary-button:hover {
-    background: var(--primary-hover);
-    transform: translateY(-1px);
-}
-
-.secondary-button {
-    background: #eeeeee;
-    color: var(--text);
-}
-
-.secondary-button:hover {
-    background: #e3e3e3;
-}
-
-.auth-form .primary-button {
-    width: 100%;
-    margin-top: 5px;
-}
-
-.text-button,
-.link-button {
-    border: none;
-    background: transparent;
-    color: var(--text);
-    font-weight: 700;
-}
-
-.text-button {
-    display: block;
-    margin: 20px auto 0;
-}
-
-.text-button:hover,
-.link-button:hover {
-    text-decoration: underline;
-}
-
-.small-button {
-    padding: 10px 15px;
-}
-
-.logout-button {
-    border: 1px solid var(--border);
-    background: white;
-    border-radius: 10px;
-    padding: 9px 12px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-
-/* ==========================================
-   MESSAGES
-   ========================================== */
-
-.error-message {
-    color: var(--danger);
-    font-size: 13px;
-    margin-top: 10px;
-    min-height: 18px;
-}
-
-
-/* ==========================================
-   ÉCRAN CLASSE
-   ========================================== */
-
-#class-screen {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 30px 20px;
-}
-
-#class-screen.active {
-    display: flex;
-}
-
-.class-container {
-    width: 100%;
-    max-width: 900px;
-    text-align: center;
-}
-
-.small-logo {
-    font-size: 32px;
-    margin-bottom: 25px;
-}
-
-.class-container h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
-}
-
-.section-description {
-    color: var(--muted);
-    max-width: 600px;
-    margin: 0 auto 35px;
-    line-height: 1.5;
-}
-
-.class-options {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 20px;
-}
-
-.class-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 22px;
-    padding: 28px;
-    text-align: left;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
-}
-
-.card-icon {
-    font-size: 35px;
-    margin-bottom: 15px;
-}
-
-.class-card h2 {
-    font-size: 21px;
-    margin-bottom: 8px;
-}
-
-.class-card p {
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 18px;
-}
-
-.class-card input {
-    margin-bottom: 10px;
-}
-
-.class-card .primary-button,
-.class-card .secondary-button {
-    width: 100%;
-}
-
-.separator {
-    color: #aaa;
-    font-size: 12px;
-    font-weight: 800;
-}
-
-
-/* ==========================================
-   TOPBAR
-   ========================================== */
-
-.topbar {
-    height: 70px;
-    background: white;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    padding: 0 25px;
-    gap: 25px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.brand {
-    font-size: 25px;
-    font-weight: 900;
-    letter-spacing: -2px;
-}
-
-.class-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: auto;
-    margin-right: 10px;
-}
-
-#current-class-name {
-    font-weight: 700;
-}
-
-.class-code {
-    background: #f0f0f0;
-    padding: 5px 8px;
-    border-radius: 7px;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 1px;
-}
-
-
-/* ==========================================
-   NAVIGATION
-   ========================================== */
-
-.navigation {
-    position: fixed;
-    left: 0;
-    top: 70px;
-    bottom: 0;
-    width: 210px;
-    background: white;
-    border-right: 1px solid var(--border);
-    padding: 20px 12px;
-}
-
-.nav-button {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 13px 14px;
-    border: none;
-    background: transparent;
-    border-radius: 12px;
-    font-weight: 600;
-    color: #666;
-    margin-bottom: 5px;
-    text-align: left;
-}
-
-.nav-button:hover {
-    background: #f4f4f4;
-    color: var(--text);
-}
-
-.nav-button.active {
-    background: #111;
-    color: white;
-}
-
-
-/* ==========================================
-   CONTENU
-   ========================================== */
-
-.content {
-    margin-left: 210px;
-    padding: 35px;
-    max-width: 1250px;
-}
-
-.page {
-    display: none;
-}
+// ==========================================
+// CONFIGURATION SUPABASE
+// ==========================================
 
-.page.active {
-    display: block;
-}
-
-.page-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.page-header h1 {
-    font-size: 34px;
-    letter-spacing: -1px;
-}
-
-.welcome-small {
-    color: var(--muted);
-    font-size: 13px;
-    margin-bottom: 4px;
-}
-
-
-/* ==========================================
-   DASHBOARD
-   ========================================== */
-
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-bottom: 35px;
-}
-
-.dashboard-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.dashboard-icon {
-    font-size: 27px;
-}
-
-.dashboard-card p {
-    color: var(--muted);
-    font-size: 13px;
-    margin-bottom: 4px;
-}
-
-.dashboard-card strong {
-    font-size: 26px;
-}
-
-.dashboard-section {
-    margin-top: 30px;
-}
+const SUPABASE_URL = "https://hlfouclokizbrbwsbeuk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_3ErTaFjBvVP_9yXzSbTkdg_XUodIKKp";
 
-.section-title-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-}
-
-.section-title-row h2 {
-    font-size: 20px;
-}
-
-
-/* ==========================================
-   LISTES
-   ========================================== */
-
-.items-list,
-.content-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.empty-state {
-    background: white;
-    border: 1px dashed #d5d5d5;
-    border-radius: 16px;
-    padding: 30px;
-    text-align: center;
-    color: var(--muted);
-}
-
-
-/* ==========================================
-   CARTES COURS / DEVOIRS / ÉVÉNEMENTS
-   ========================================== */
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-.item-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 17px;
-    padding: 18px;
-}
 
-.item-top {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-}
+// ==========================================
+// VARIABLES
+// ==========================================
 
-.item-card h3 {
-    font-size: 17px;
-    margin-bottom: 5px;
-}
+let currentUser = null;
+let currentClass = null;
 
-.item-subject {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
 
-.item-content {
-    color: #555;
-    font-size: 14px;
-    line-height: 1.6;
-    margin-top: 12px;
-    white-space: pre-wrap;
-}
+// ==========================================
+// ÉLÉMENTS
+// ==========================================
 
-.item-date {
-    background: #f1f1f1;
-    border-radius: 9px;
-    padding: 7px 10px;
-    font-size: 12px;
-    font-weight: 700;
-    white-space: nowrap;
-}
+const authScreen = document.getElementById("auth-screen");
+const classScreen = document.getElementById("class-screen");
+const mainScreen = document.getElementById("main-screen");
 
 
-/* ==========================================
-   FORMULAIRES D'AJOUT
-   ========================================== */
+// ==========================================
+// UTILITAIRES
+// ==========================================
 
-.add-form {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 22px;
-    margin-bottom: 25px;
-}
+function showScreen(screen) {
+    document.querySelectorAll(".screen").forEach(element => {
+        element.classList.remove("active");
+    });
 
-.add-form h2 {
-    font-size: 20px;
-    margin-bottom: 18px;
+    screen.classList.add("active");
 }
 
-.add-form input,
-.add-form textarea,
-.add-form select {
-    margin-bottom: 12px;
-}
+function setError(elementId, message) {
+    const element = document.getElementById(elementId);
 
-.add-form label {
-    display: block;
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 7px;
+    if (element) {
+        element.textContent = message || "";
+    }
 }
 
-.form-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 5px;
+function clearErrors() {
+    setError("login-error", "");
+    setError("register-error", "");
+    setError("class-error", "");
 }
-
-
-/* ==========================================
-   RESPONSIVE — TABLETTE
-   ========================================== */
-
-@media (max-width: 800px) {
 
-    .class-options {
-        grid-template-columns: 1fr;
+function escapeHTML(value) {
+    if (value === null || value === undefined) {
+        return "";
     }
 
-    .separator {
-        padding: 3px;
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function formatDate(dateString) {
+    if (!dateString) {
+        return "";
     }
 
-    .dashboard-grid {
-        grid-template-columns: 1fr;
+    const date = new Date(dateString + "T00:00:00");
+
+    return date.toLocaleDateString("fr-FR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    });
+}
+
+
+// ==========================================
+// AFFICHER LES FORMULAIRES CONNEXION / INSCRIPTION
+// ==========================================
+
+document.getElementById("show-register").addEventListener("click", () => {
+    document.getElementById("login-form").classList.add("hidden");
+    document.getElementById("register-form").classList.remove("hidden");
+
+    clearErrors();
+});
+
+document.getElementById("show-login").addEventListener("click", () => {
+    document.getElementById("register-form").classList.add("hidden");
+    document.getElementById("login-form").classList.remove("hidden");
+
+    clearErrors();
+});
+
+
+// ==========================================
+// INSCRIPTION
+// ==========================================
+
+document.getElementById("register-button").addEventListener("click", async () => {
+
+    clearErrors();
+
+    const name = document.getElementById("register-name").value.trim();
+    const email = document.getElementById("register-email").value.trim();
+    const password = document.getElementById("register-password").value;
+
+    if (!name) {
+        setError("register-error", "Entre ton prénom.");
+        return;
     }
 
-    .navigation {
-        width: 175px;
+    if (!email) {
+        setError("register-error", "Entre ton adresse e-mail.");
+        return;
     }
 
-    .content {
-        margin-left: 175px;
-        padding: 25px;
+    if (!password || password.length < 6) {
+        setError(
+            "register-error",
+            "Le mot de passe doit contenir au moins 6 caractères."
+        );
+        return;
+    }
+
+    const button = document.getElementById("register-button");
+
+    button.disabled = true;
+    button.textContent = "Création...";
+
+    try {
+
+        const { data, error } = await db.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: {
+                    name: name
+                }
+            }
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        /*
+         * Si la confirmation e-mail est activée dans Supabase,
+         * session sera null et l'utilisateur devra confirmer son adresse.
+         */
+
+        if (!data.session) {
+
+            setError(
+                "register-error",
+                "Compte créé ! Vérifie ton adresse e-mail pour continuer."
+            );
+
+            button.disabled = false;
+            button.textContent = "Créer mon compte";
+
+            return;
+        }
+
+        currentUser = data.user;
+
+        await loadUserClass();
+
+    } catch (error) {
+
+        console.error(error);
+
+        setError(
+            "register-error",
+            error.message || "Impossible de créer le compte."
+        );
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "Créer mon compte";
+    }
+});
+
+
+// ==========================================
+// CONNEXION
+// ==========================================
+
+document.getElementById("login-button").addEventListener("click", async () => {
+
+    clearErrors();
+
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
+
+    if (!email || !password) {
+        setError(
+            "login-error",
+            "Entre ton adresse e-mail et ton mot de passe."
+        );
+        return;
+    }
+
+    const button = document.getElementById("login-button");
+
+    button.disabled = true;
+    button.textContent = "Connexion...";
+
+    try {
+
+        const { data, error } = await db.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        currentUser = data.user;
+
+        await loadUserClass();
+
+    } catch (error) {
+
+        console.error(error);
+
+        setError(
+            "login-error",
+            error.message || "Impossible de se connecter."
+        );
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "Se connecter";
+    }
+});
+
+
+// ==========================================
+// CHARGER LA CLASSE DE L'UTILISATEUR
+// ==========================================
+
+async function loadUserClass() {
+
+    if (!currentUser) {
+        showScreen(authScreen);
+        return;
+    }
+
+    clearErrors();
+
+    try {
+
+        const { data: membership, error: membershipError } = await db
+            .from("class_members")
+            .select("class_id, role")
+            .eq("user_id", currentUser.id)
+            .limit(1)
+            .maybeSingle();
+
+        if (membershipError) {
+            throw membershipError;
+        }
+
+        if (!membership) {
+
+            showScreen(classScreen);
+
+            return;
+        }
+
+        const { data: classData, error: classError } = await db
+            .from("classes")
+            .select("*")
+            .eq("id", membership.class_id)
+            .single();
+
+        if (classError) {
+            throw classError;
+        }
+
+        currentClass = classData;
+
+        await openMainApp();
+
+    } catch (error) {
+
+        console.error(error);
+
+        setError(
+            "class-error",
+            error.message || "Impossible de charger ta classe."
+        );
+
+        showScreen(classScreen);
     }
 }
 
 
-/* ==========================================
-   RESPONSIVE — MOBILE
-   ========================================== */
+// ==========================================
+// CRÉER UNE CLASSE
+// ==========================================
 
-@media (max-width: 600px) {
+document.getElementById("create-class-button").addEventListener("click", async () => {
 
-    #auth-screen,
-    #class-screen {
-        padding: 20px 14px;
+    clearErrors();
+
+    const name = document.getElementById("new-class-name").value.trim();
+
+    if (!name) {
+        setError("class-error", "Entre un nom pour ta classe.");
+        return;
     }
 
-    .auth-form {
-        padding: 22px;
+    const button = document.getElementById("create-class-button");
+
+    button.disabled = true;
+    button.textContent = "Création...";
+
+    try {
+
+        const { data, error } = await db.rpc("create_class", {
+            p_name: name
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        /*
+         * La fonction SQL retourne la classe créée.
+         */
+
+        currentClass = Array.isArray(data) ? data[0] : data;
+
+        if (!currentClass || !currentClass.id) {
+            throw new Error("La classe n'a pas pu être récupérée.");
+        }
+
+        document.getElementById("new-class-name").value = "";
+
+        await openMainApp();
+
+    } catch (error) {
+
+        console.error(error);
+
+        setError(
+            "class-error",
+            error.message || "Impossible de créer la classe."
+        );
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "Créer la classe";
+    }
+});
+
+
+// ==========================================
+// REJOINDRE UNE CLASSE
+// ==========================================
+
+document.getElementById("join-class-button").addEventListener("click", async () => {
+
+    clearErrors();
+
+    const code = document
+        .getElementById("join-class-code")
+        .value
+        .trim()
+        .toUpperCase();
+
+    if (!code) {
+        setError("class-error", "Entre le code de la classe.");
+        return;
     }
 
-    .logo {
-        font-size: 36px;
-    }
+    const button = document.getElementById("join-class-button");
 
-    .class-container h1 {
-        font-size: 26px;
-    }
+    button.disabled = true;
+    button.textContent = "Connexion...";
 
-    .class-card {
-        padding: 22px;
-    }
+    try {
 
-    .topbar {
-        height: 62px;
-        padding: 0 14px;
-        gap: 10px;
-    }
+        const { data, error } = await db.rpc("join_class", {
+            p_join_code: code
+        });
 
-    .brand {
-        font-size: 22px;
-    }
+        if (error) {
+            throw error;
+        }
 
-    .class-info {
-        margin-left: auto;
-        margin-right: 0;
-    }
+        currentClass = Array.isArray(data) ? data[0] : data;
 
-    #current-class-name {
-        display: none;
-    }
+        if (!currentClass || !currentClass.id) {
+            throw new Error("La classe n'a pas pu être récupérée.");
+        }
 
-    .logout-button {
-        font-size: 11px;
-        padding: 8px 9px;
-    }
+        document.getElementById("join-class-code").value = "";
 
-    .navigation {
-        top: auto;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 68px;
-        border-right: none;
-        border-top: 1px solid var(--border);
-        padding: 7px 5px;
-        display: flex;
-        justify-content: space-around;
-        z-index: 20;
-    }
+        await openMainApp();
 
-    .nav-button {
-        flex: 1;
-        flex-direction: column;
-        justify-content: center;
-        gap: 2px;
-        padding: 5px;
-        margin: 0;
-        font-size: 11px;
-        text-align: center;
-    }
+    } catch (error) {
 
-    .nav-button span {
-        font-size: 10px;
-    }
+        console.error(error);
 
-    .content {
-        margin-left: 0;
-        padding: 22px 14px 90px;
-    }
+        setError(
+            "class-error",
+            error.message || "Code incorrect ou impossible de rejoindre la classe."
+        );
 
-    .page-header {
-        align-items: flex-start;
-    }
+    } finally {
 
-    .page-header h1 {
-        font-size: 27px;
+        button.disabled = false;
+        button.textContent = "Rejoindre";
     }
+});
 
-    .small-button {
-        font-size: 12px;
-    }
 
-    .dashboard-card {
-        padding: 17px;
-    }
+// ==========================================
+// OUVRIR L'APPLICATION
+// ==========================================
 
-    .form-actions {
-        flex-direction: column;
-    }
+async function openMainApp() {
 
-    .form-actions button {
-        width: 100%;
-    }
+    showScreen(mainScreen);
 
-    .item-top {
-        flex-direction: column;
-    }
+    const userName =
+        currentUser?.user_metadata?.name ||
+        currentUser?.email?.split("@")[0] ||
+        "Élève";
 
-    .item-date {
-        width: fit-content;
+    document.getElementById("welcome-name").textContent =
+        `Bonjour ${userName} !`;
+
+    document.getElementById("current-class-name").textContent =
+        currentClass.name;
+
+    document.getElementById("current-class-code").textContent =
+        currentClass.join_code;
+
+    await loadAllData();
+}
+
+
+// ==========================================
+// NAVIGATION
+// ==========================================
+
+document.querySelectorAll(".nav-button").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const pageName = button.dataset.page;
+
+        switchPage(pageName);
+    });
+});
+
+
+document.querySelectorAll("[data-page-target]").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const pageName = button.dataset.pageTarget;
+
+        switchPage(pageName);
+    });
+});
+
+
+function switchPage(pageName) {
+
+    document.querySelectorAll(".nav-button").forEach(button => {
+
+        button.classList.toggle(
+            "active",
+            button.dataset.page === pageName
+        );
+    });
+
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    const page = document.getElementById(`page-${pageName}`);
+
+    if (page) {
+        page.classList.add("active");
     }
 }
+
+
+// ==========================================
+// DÉCONNEXION
+// ==========================================
+
+document.getElementById("logout-button").addEventListener("click", async () => {
+
+    try {
+
+        await db.auth.signOut();
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+    currentUser = null;
+    currentClass = null;
+
+    showScreen(authScreen);
+
+    document.getElementById("login-form").classList.remove("hidden");
+    document.getElementById("register-form").classList.add("hidden");
+
+    document.getElementById("login-email").value = "";
+    document.getElementById("login-password").value = "";
+
+    clearErrors();
+});
+
+
+// ==========================================
+// COURS
+// ==========================================
+
+document.getElementById("add-course-button").addEventListener("click", () => {
+
+    document.getElementById("course-form").classList.remove("hidden");
+});
+
+document.getElementById("cancel-course-button").addEventListener("click", () => {
+
+    document.getElementById("course-form").classList.add("hidden");
+
+    document.getElementById("course-subject").value = "";
+    document.getElementById("course-title").value = "";
+    document.getElementById("course-content").value = "";
+});
+
+document.getElementById("save-course-button").addEventListener("click", async () => {
+
+    if (!currentUser || !currentClass) {
+        return;
+    }
+
+    const subject = document.getElementById("course-subject").value.trim();
+    const title = document.getElementById("course-title").value.trim();
+    const content = document.getElementById("course-content").value.trim();
+
+    if (!subject || !title || !content) {
+        alert("Remplis tous les champs du cours.");
+        return;
+    }
+
+    const button = document.getElementById("save-course-button");
+
+    button.disabled = true;
+    button.textContent = "Ajout...";
+
+    try {
+
+        const { error } = await db
+            .from("courses")
+            .insert({
+                class_id: currentClass.id,
+                user_id: currentUser.id,
+                subject: subject,
+                title: title,
+                content: content
+            });
+
+        if (error) {
+            throw error;
+        }
+
+        document.getElementById("course-form").classList.add("hidden");
+
+        document.getElementById("course-subject").value = "";
+        document.getElementById("course-title").value = "";
+        document.getElementById("course-content").value = "";
+
+        await loadCourses();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            error.message || "Impossible d'ajouter le cours."
+        );
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "Ajouter le cours";
+    }
+});
+
+
+// ==========================================
+// DEVOIRS
+// ==========================================
+
+document.getElementById("add-homework-button").addEventListener("click", () => {
+
+    document.getElementById("homework-form").classList.remove("hidden");
+});
+
+document.getElementById("cancel-homework-button").addEventListener("click", () => {
+
+    document.getElementById("homework-form").classList.add("hidden");
+
+    document.getElementById("homework-subject").value = "";
+    document.getElementById("homework-title").value = "";
+    document.getElementById("homework-description").value = "";
+    document.getElementById("homework-date").value = "";
+});
+
+document.getElementById("save-homework-button").addEventListener("click", async () => {
+
+    if (!currentUser || !currentClass) {
+        return;
+    }
+
+    const subject = document.getElementById("homework-subject").value.trim();
+    const title = document.getElementById("homework-title").value.trim();
+    const description = document
+        .getElementById("homework-description")
+        .value
+        .trim();
+
+    const dueDate = document.getElementById("homework-date").value;
+
+    if (!subject || !title || !dueDate) {
+        alert("Remplis la matière, le titre et la date.");
+        return;
+    }
+
+    const button = document.getElementById("save-homework-button");
+
+    button.disabled = true;
+    button.textContent = "Ajout...";
+
+    try {
+
+        const { error } = await db
+            .from("homework")
+            .insert({
+                class_id: currentClass.id,
+                user_id: currentUser.id,
+                subject: subject,
+                title: title,
+                description: description,
+                due_date: dueDate
+            });
+
+        if (error) {
+            throw error;
+        }
+
+        document.getElementById("homework-form").classList.add("hidden");
+
+        document.getElementById("homework-subject").value = "";
+        document.getElementById("homework-title").value = "";
+        document.getElementById("homework-description").value = "";
+        document.getElementById("homework-date").value = "";
+
+        await loadHomework();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            error.message || "Impossible d'ajouter le devoir."
+        );
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "Ajouter le devoir";
+    }
+});
+
+
+// ==========================================
+// ÉVÉNEMENTS
+// ==========================================
+
+document.getElementById("add-event-button").addEventListener("click", () => {
+
+    document.getElementById("event-form").classList.remove("hidden");
+});
+
+document.getElementById("cancel-event-button").addEventListener("click", () => {
+
+    document.getElementById("event-form").classList.add("hidden");
+
+    document.getElementById("event-title").value = "";
+    document.getElementById("event-description").value = "";
+    document.getElementById("event-date").value = "";
+    document.getElementById("event-type").value = "other";
+});
+
+document.getElementById("save-event-button").addEventListener("click", async () => {
+
+    if (!currentUser || !currentClass) {
+        return;
+    }
+
+    const title = document.getElementById("event-title").value.trim();
+
+    const description = document
+        .getElementById("event-description")
+        .value
+        .trim();
+
+    const eventDate = document.getElementById("event-date").value;
+
+    const eventType = document.getElementById("event-type").value;
+
+    if (!title || !eventDate) {
+        alert("Remplis le nom et la date.");
+        return;
+    }
+
+    const button = document.getElementById("save-event-button");
+
+    button.disabled = true;
+    button.textContent = "Ajout...";
+
+    try {
+
+        const { error } = await db
+            .from("events")
+            .insert({
+                class_id: currentClass.id,
+                user_id: currentUser.id,
+                title: title,
+                description: description,
+                event_date: eventDate,
+                event_type: eventType
+            });
+
+        if (error) {
+            throw error;
+        }
+
+        document.getElementById("event-form").classList.add("hidden");
+
+        document.getElementById("event-title").value = "";
+        document.getElementById("event-description").value = "";
+        document.getElementById("event-date").value = "";
+        document.getElementById("event-type").value = "other";
+
+        await loadEvents();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            error.message || "Impossible d'ajouter l'événement."
+        );
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "Ajouter";
+    }
+});
+
+
+// ==========================================
+// CHARGEMENT DES DONNÉES
+// ==========================================
+
+async function loadAllData() {
+
+    await Promise.all([
+        loadCourses(),
+        loadHomework(),
+        loadEvents()
+    ]);
+}
+
+
+// ==========================================
+// CHARGER LES COURS
+// ==========================================
+
+async function loadCourses() {
+
+    if (!currentClass) {
+        return;
+    }
+
+    try {
+
+        const { data, error } = await db
+            .from("courses")
+            .select("*")
+            .eq("class_id", currentClass.id)
+            .order("created_at", {
+                ascending: false
+            });
+
+        if (error) {
+            throw error;
+        }
+
+        renderCourses(data || []);
+
+    } catch (error) {
+
+        console.error("Erreur cours :", error);
+    }
+}
+
+
+// ==========================================
+// AFFICHER LES COURS
+// ==========================================
+
+function renderCourses(courses) {
+
+    const list = document.getElementById("courses-list");
+
+    if (!courses.length) {
+
+        list.innerHTML = `
+            <div class="empty-state">
+                Aucun cours pour le moment.
+            </div>
+        `;
+
+        document.getElementById("dashboard-course-count").textContent = "0";
+
+        document.getElementById("dashboard-course-list").innerHTML = `
+            <div class="empty-state">
+                Aucun cours pour le moment.
+            </div>
+        `;
+
+        return;
+    }
+
+    document.getElementById("dashboard-course-count").textContent =
+        courses.length;
+
+    list.innerHTML = courses.map(course => {
+
+        return `
+            <div class="item-card">
+
+                <div class="item-top">
+
+                    <div>
+
+                        <div class="item-subject">
+                            ${escapeHTML(course.subject)}
+                        </div>
+
+                        <h3>
+                            ${escapeHTML(course.title)}
+                        </h3>
+
+                    </div>
+
+                    <div class="item-date">
+                        ${formatDate(course.created_at?.slice(0, 10))}
+                    </div>
+
+                </div>
+
+                <div class="item-content">
+                    ${escapeHTML(course.content)}
+                </div>
+
+            </div>
+        `;
+
+    }).join("");
+
+    const recentCourses = courses.slice(0, 3);
+
+    document.getElementById("dashboard-course-list").innerHTML =
+        recentCourses.map(course => {
+
+            return `
+                <div class="item-card">
+
+                    <div class="item-subject">
+                        ${escapeHTML(course.subject)}
+                    </div>
+
+                    <h3>
+                        ${escapeHTML(course.title)}
+                    </h3>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+
+// ==========================================
+// CHARGER LES DEVOIRS
+// ==========================================
+
+async function loadHomework() {
+
+    if (!currentClass) {
+        return;
+    }
+
+    try {
+
+        const { data, error } = await db
+            .from("homework")
+            .select("*")
+            .eq("class_id", currentClass.id)
+            .order("due_date", {
+                ascending: true
+            });
+
+        if (error) {
+            throw error;
+        }
+
+        renderHomework(data || []);
+
+    } catch (error) {
+
+        console.error("Erreur devoirs :", error);
+    }
+}
+
+
+// ==========================================
+// AFFICHER LES DEVOIRS
+// ==========================================
+
+function renderHomework(homework) {
+
+    const list = document.getElementById("homework-list");
+
+    if (!homework.length) {
+
+        list.innerHTML = `
+            <div class="empty-state">
+                Aucun devoir pour le moment.
+            </div>
+        `;
+
+        document.getElementById("dashboard-homework-count").textContent = "0";
+
+        document.getElementById("dashboard-homework-list").innerHTML = `
+            <div class="empty-state">
+                Aucun devoir pour le moment.
+            </div>
+        `;
+
+        return;
+    }
+
+    document.getElementById("dashboard-homework-count").textContent =
+        homework.length;
+
+    list.innerHTML = homework.map(item => {
+
+        return `
+            <div class="item-card">
+
+                <div class="item-top">
+
+                    <div>
+
+                        <div class="item-subject">
+                            ${escapeHTML(item.subject)}
+                        </div>
+
+                        <h3>
+                            ${escapeHTML(item.title)}
+                        </h3>
+
+                    </div>
+
+                    <div class="item-date">
+                        ${formatDate(item.due_date)}
+                    </div>
+
+                </div>
+
+                ${
+                    item.description
+                        ? `
+                            <div class="item-content">
+                                ${escapeHTML(item.description)}
+                            </div>
+                        `
+                        : ""
+                }
+
+            </div>
+        `;
+
+    }).join("");
+
+    const upcoming = homework.slice(0, 3);
+
+    document.getElementById("dashboard-homework-list").innerHTML =
+        upcoming.map(item => {
+
+            return `
+                <div class="item-card">
+
+                    <div class="item-top">
+
+                        <div>
+
+                            <div class="item-subject">
+                                ${escapeHTML(item.subject)}
+                            </div>
+
+                            <h3>
+                                ${escapeHTML(item.title)}
+                            </h3>
+
+                        </div>
+
+                        <div class="item-date">
+                            ${formatDate(item.due_date)}
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+
+// ==========================================
+// CHARGER LES ÉVÉNEMENTS
+// ==========================================
+
+async function loadEvents() {
+
+    if (!currentClass) {
+        return;
+    }
+
+    try {
+
+        const { data, error } = await db
+            .from("events")
+            .select("*")
+            .eq("class_id", currentClass.id)
+            .order("event_date", {
+                ascending: true
+            });
+
+        if (error) {
+            throw error;
+        }
+
+        renderEvents(data || []);
+
+    } catch (error) {
+
+        console.error("Erreur événements :", error);
+    }
+}
+
+
+// ==========================================
+// AFFICHER LES ÉVÉNEMENTS
+// ==========================================
+
+function renderEvents(events) {
+
+    const list = document.getElementById("events-list");
+
+    if (!events.length) {
+
+        list.innerHTML = `
+            <div class="empty-state">
+                Aucun événement pour le moment.
+            </div>
+        `;
+
+        document.getElementById("dashboard-event-count").textContent = "0";
+
+        return;
+    }
+
+    document.getElementById("dashboard-event-count").textContent =
+        events.length;
+
+    list.innerHTML = events.map(event => {
+
+        return `
+            <div class="item-card">
+
+                <div class="item-top">
+
+                    <div>
+
+                        <div class="item-subject">
+                            ${escapeHTML(event.event_type)}
+                        </div>
+
+                        <h3>
+                            ${escapeHTML(event.title)}
+                        </h3>
+
+                    </div>
+
+                    <div class="item-date">
+                        ${formatDate(event.event_date)}
+                    </div>
+
+                </div>
+
+                ${
+                    event.description
+                        ? `
+                            <div class="item-content">
+                                ${escapeHTML(event.description)}
+                            </div>
+                        `
+                        : ""
+                }
+
+            </div>
+        `;
+
+    }).join("");
+}
+
+
+// ==========================================
+// INITIALISATION
+// ==========================================
+
+async function init() {
+
+    clearErrors();
+
+    try {
+
+        const {
+            data: {
+                session
+            }
+        } = await db.auth.getSession();
+
+        if (session?.user) {
+
+            currentUser = session.user;
+
+            await loadUserClass();
+
+        } else {
+
+            showScreen(authScreen);
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        showScreen(authScreen);
+    }
+}
+
+
+// ==========================================
+// SURVEILLER L'AUTHENTIFICATION
+// ==========================================
+
+db.auth.onAuthStateChange(async (event, session) => {
+
+    if (session?.user) {
+
+        currentUser = session.user;
+
+    } else if (event === "SIGNED_OUT") {
+
+        currentUser = null;
+        currentClass = null;
+
+        showScreen(authScreen);
+    }
+});
+
+
+// ==========================================
+// LANCEMENT
+// ==========================================
+
+init();
