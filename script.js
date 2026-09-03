@@ -1,1 +1,737 @@
+/* ==========================================
+   SKOOL — STYLE V1
+   ========================================== */
 
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #f5f5f7;
+    --card: #ffffff;
+    --text: #111111;
+    --muted: #737373;
+    --border: #e7e7e7;
+    --primary: #111111;
+    --primary-hover: #292929;
+    --danger: #d93636;
+    --radius: 18px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text);
+    border-radius: 12px;
+    padding: 13px 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #999;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* ==========================================
+   ÉCRANS
+   ========================================== */
+
+.screen {
+    display: none;
+    min-height: 100vh;
+}
+
+.screen.active {
+    display: block;
+}
+
+
+/* ==========================================
+   AUTHENTIFICATION
+   ========================================== */
+
+#auth-screen {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+}
+
+#auth-screen.active {
+    display: flex;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 430px;
+    text-align: center;
+}
+
+.logo {
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: -3px;
+}
+
+.tagline {
+    color: var(--muted);
+    margin-top: 8px;
+    margin-bottom: 35px;
+}
+
+.auth-form {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 28px;
+    text-align: left;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
+}
+
+.auth-form h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.form-description {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 22px;
+}
+
+.auth-form input {
+    margin-bottom: 12px;
+}
+
+
+/* ==========================================
+   BOUTONS
+   ========================================== */
+
+.primary-button,
+.secondary-button {
+    border-radius: 12px;
+    padding: 13px 18px;
+    border: none;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.primary-button {
+    background: var(--primary);
+    color: white;
+}
+
+.primary-button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.secondary-button {
+    background: #eeeeee;
+    color: var(--text);
+}
+
+.secondary-button:hover {
+    background: #e3e3e3;
+}
+
+.auth-form .primary-button {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.text-button,
+.link-button {
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font-weight: 700;
+}
+
+.text-button {
+    display: block;
+    margin: 20px auto 0;
+}
+
+.text-button:hover,
+.link-button:hover {
+    text-decoration: underline;
+}
+
+.small-button {
+    padding: 10px 15px;
+}
+
+.logout-button {
+    border: 1px solid var(--border);
+    background: white;
+    border-radius: 10px;
+    padding: 9px 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   MESSAGES
+   ========================================== */
+
+.error-message {
+    color: var(--danger);
+    font-size: 13px;
+    margin-top: 10px;
+    min-height: 18px;
+}
+
+
+/* ==========================================
+   ÉCRAN CLASSE
+   ========================================== */
+
+#class-screen {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+}
+
+#class-screen.active {
+    display: flex;
+}
+
+.class-container {
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+}
+
+.small-logo {
+    font-size: 32px;
+    margin-bottom: 25px;
+}
+
+.class-container h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.section-description {
+    color: var(--muted);
+    max-width: 600px;
+    margin: 0 auto 35px;
+    line-height: 1.5;
+}
+
+.class-options {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 20px;
+}
+
+.class-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 28px;
+    text-align: left;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+}
+
+.card-icon {
+    font-size: 35px;
+    margin-bottom: 15px;
+}
+
+.class-card h2 {
+    font-size: 21px;
+    margin-bottom: 8px;
+}
+
+.class-card p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 18px;
+}
+
+.class-card input {
+    margin-bottom: 10px;
+}
+
+.class-card .primary-button,
+.class-card .secondary-button {
+    width: 100%;
+}
+
+.separator {
+    color: #aaa;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+
+/* ==========================================
+   TOPBAR
+   ========================================== */
+
+.topbar {
+    height: 70px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    gap: 25px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.brand {
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: -2px;
+}
+
+.class-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+#current-class-name {
+    font-weight: 700;
+}
+
+.class-code {
+    background: #f0f0f0;
+    padding: 5px 8px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+
+.navigation {
+    position: fixed;
+    left: 0;
+    top: 70px;
+    bottom: 0;
+    width: 210px;
+    background: white;
+    border-right: 1px solid var(--border);
+    padding: 20px 12px;
+}
+
+.nav-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 14px;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.nav-button:hover {
+    background: #f4f4f4;
+    color: var(--text);
+}
+
+.nav-button.active {
+    background: #111;
+    color: white;
+}
+
+
+/* ==========================================
+   CONTENU
+   ========================================== */
+
+.content {
+    margin-left: 210px;
+    padding: 35px;
+    max-width: 1250px;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    font-size: 34px;
+    letter-spacing: -1px;
+}
+
+.welcome-small {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+
+/* ==========================================
+   DASHBOARD
+   ========================================== */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+.dashboard-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.dashboard-icon {
+    font-size: 27px;
+}
+
+.dashboard-card p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.dashboard-card strong {
+    font-size: 26px;
+}
+
+.dashboard-section {
+    margin-top: 30px;
+}
+
+.section-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.section-title-row h2 {
+    font-size: 20px;
+}
+
+
+/* ==========================================
+   LISTES
+   ========================================== */
+
+.items-list,
+.content-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.empty-state {
+    background: white;
+    border: 1px dashed #d5d5d5;
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    color: var(--muted);
+}
+
+
+/* ==========================================
+   CARTES COURS / DEVOIRS / ÉVÉNEMENTS
+   ========================================== */
+
+.item-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    padding: 18px;
+}
+
+.item-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.item-card h3 {
+    font-size: 17px;
+    margin-bottom: 5px;
+}
+
+.item-subject {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.item-content {
+    color: #555;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: 12px;
+    white-space: pre-wrap;
+}
+
+.item-date {
+    background: #f1f1f1;
+    border-radius: 9px;
+    padding: 7px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+
+/* ==========================================
+   FORMULAIRES D'AJOUT
+   ========================================== */
+
+.add-form {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 22px;
+    margin-bottom: 25px;
+}
+
+.add-form h2 {
+    font-size: 20px;
+    margin-bottom: 18px;
+}
+
+.add-form input,
+.add-form textarea,
+.add-form select {
+    margin-bottom: 12px;
+}
+
+.add-form label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+
+/* ==========================================
+   RESPONSIVE — TABLETTE
+   ========================================== */
+
+@media (max-width: 800px) {
+
+    .class-options {
+        grid-template-columns: 1fr;
+    }
+
+    .separator {
+        padding: 3px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .navigation {
+        width: 175px;
+    }
+
+    .content {
+        margin-left: 175px;
+        padding: 25px;
+    }
+}
+
+
+/* ==========================================
+   RESPONSIVE — MOBILE
+   ========================================== */
+
+@media (max-width: 600px) {
+
+    #auth-screen,
+    #class-screen {
+        padding: 20px 14px;
+    }
+
+    .auth-form {
+        padding: 22px;
+    }
+
+    .logo {
+        font-size: 36px;
+    }
+
+    .class-container h1 {
+        font-size: 26px;
+    }
+
+    .class-card {
+        padding: 22px;
+    }
+
+    .topbar {
+        height: 62px;
+        padding: 0 14px;
+        gap: 10px;
+    }
+
+    .brand {
+        font-size: 22px;
+    }
+
+    .class-info {
+        margin-left: auto;
+        margin-right: 0;
+    }
+
+    #current-class-name {
+        display: none;
+    }
+
+    .logout-button {
+        font-size: 11px;
+        padding: 8px 9px;
+    }
+
+    .navigation {
+        top: auto;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 68px;
+        border-right: none;
+        border-top: 1px solid var(--border);
+        padding: 7px 5px;
+        display: flex;
+        justify-content: space-around;
+        z-index: 20;
+    }
+
+    .nav-button {
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2px;
+        padding: 5px;
+        margin: 0;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .nav-button span {
+        font-size: 10px;
+    }
+
+    .content {
+        margin-left: 0;
+        padding: 22px 14px 90px;
+    }
+
+    .page-header {
+        align-items: flex-start;
+    }
+
+    .page-header h1 {
+        font-size: 27px;
+    }
+
+    .small-button {
+        font-size: 12px;
+    }
+
+    .dashboard-card {
+        padding: 17px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+
+    .item-top {
+        flex-direction: column;
+    }
+
+    .item-date {
+        width: fit-content;
+    }
+}
